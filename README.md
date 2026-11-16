@@ -105,7 +105,7 @@
 |---|---|
 | PHP | `>= 8.3`（`composer.json` 的 `require.php` 为 `^8.3`，本机实测 `8.5.12`） |
 | MySQL | `>= 8.0` |
-| PHP 扩展 | `fileinfo`、`pdo_mysql`、`mbstring`、`openssl`、`curl`、`zip`、`exif`、`bcmath`、`tokenizer` |
+| PHP 扩展 | `fileinfo`、`pdo_mysql`、`mbstring`、`openssl`、`curl`、`zip`、`bcmath`、`tokenizer`（`exif` 选填） |
 | PHP 函数 | `proc_open`、`putenv`、`proc_get_status` 未被禁用 |
 | 运行环境 | 64 位 PHP；`bootstrap/`、`bootstrap/cache/`、`storage/`、`public/` 目录可写 |
 | Web 服务器 | `Nginx` / `Apache`，站点运行目录指向 `public/`，需支持 Rewrite |
@@ -113,6 +113,8 @@
 | Node.js | 仅在重新编译前端资源、运行截图 / UI 测试时需要 |
 
 > 版本门槛以 `composer.json` 的 `require.php`（`^8.3`）为准，安装向导与 artisan 均按此校验；本文档命令统一使用 `php85`（PHP 8.5.12）。
+>
+> PHP 8.5 注意：`opcache` 自 8.5 起已内置（面板「安装扩展」里不再提供），`disable_classes` 配置项已移除，`curl_close` / `finfo_close` / `imagedestroy` 已弃用（由内置兼容层处理）；宝塔 PHP 8.4 / 8.5 的「极速安装」包可能未包含 `--enable-zip`，需改用「编译安装」并添加 `--enable-zip`，或先使用 PHP 8.1 / 8.2。安装页检测不通过时会展开「环境诊断与修复指引」，输出站点实际使用的 `php.ini`、`extension_dir` 与已加载扩展清单，便于核对面板与站点是否同一个 PHP。
 
 ### 命令行安装
 
