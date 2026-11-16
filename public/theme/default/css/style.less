@@ -1,0 +1,12 @@
+@color-primary: #656DE6;
+
+:root {
+  --theme-color-primary: @color-primary;
+  --theme-color-primary-dark: lighten(@color-primary, 10%);
+  --theme-color-primary-light: darken(@color-primary, 10%);
+}
+
+/* 页脚深色区域标题跟随墨表面高亮色（对齐 style.css 的站点级覆盖） */
+.ub-footer-link.reverse .link .title {
+  color: var(--color-ink-heading);
+}

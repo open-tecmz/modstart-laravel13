@@ -1,0 +1,12 @@
+:root {
+  --theme-color-primary: #656DE6;
+  --theme-color-primary-dark: #9197ed;
+  --theme-color-primary-light: #3943df;
+}
+
+/* 页脚深色区域标题跟随墨表面高亮色：
+   基础库 footer.less 只覆盖了 .reverse 下的 a 颜色，.link .title 仍是浅色主题的
+   --color-heading（深色），在墨色页脚上不可见，这里做站点级覆盖 */
+.ub-footer-link.reverse .link .title {
+  color: var(--color-ink-heading);
+}
