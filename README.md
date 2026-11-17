@@ -1,105 +1,94 @@
 <p align="center">
-  <a href="https://modstart.com">
-    <img src="https://ms-assets.modstart.com/data/image/2021/09/08/23652_1f1j_9825.png" alt="ModStart" width="360" />
-  </a>
-</p>
-<p align="center">
-  基于 Laravel 13 的模块化建站框架
-</p>
-
-<p align="center">
-  <a href="https://modstart.com" target="_blank">
-    <img alt="Framework ModStart" src="https://img.shields.io/badge/Framework-ModStart-blue">
-  </a>
-  <a href="https://laravel.com" target="_blank">
-    <img alt="Laravel 13" src="https://img.shields.io/badge/Laravel-13.x-red">
-  </a>
-  <a href="https://www.php.net" target="_blank">
-    <img alt="PHP 8.3+" src="https://img.shields.io/badge/PHP-8.3%2B-red">
-  </a>
-  <a href="https://vuejs.org" target="_blank">
-    <img alt="Vue / Element UI" src="https://img.shields.io/badge/JS-Vue%20%2F%20ElementUI-green">
-  </a>
-  <a href="https://www.mysql.com" target="_blank">
-    <img alt="MySQL 8.0+" src="https://img.shields.io/badge/MySQL-8.0%2B-orange">
-  </a>
+  <img src="./assets/readme/hero.gif" width="100%" alt="ModStart Laravel 13：通用功能包作底座，业务模块逐个装上，虚线插槽表示可以继续安装自己的模块">
 </p>
 
 # ModStart Laravel 13
 
-##  🔥 功能一览
+基于 **Laravel 13** 的模块化建站框架。路由、菜单、数据表、视图都收在模块里，装、启、停互不影响。后台由 `AdminManager` 提供，装上就有；开发时接上 [AI 开发技能](#ai-开发技能)，助手先读规范再动手。
 
-本项目在 ModStart 6.0 基础库之上做过精简装配，默认只启用必要模块，开箱即用。
+<p align="center">
+  <a href="https://modstart.com" target="_blank"><img alt="Framework ModStart" src="https://img.shields.io/badge/Framework-ModStart-blue"></a>
+  <a href="https://laravel.com" target="_blank"><img alt="Laravel 13.x" src="https://img.shields.io/badge/Laravel-13.x-red"></a>
+  <a href="https://www.php.net" target="_blank"><img alt="PHP 8.3+" src="https://img.shields.io/badge/PHP-8.3%2B-red"></a>
+  <a href="https://www.mysql.com" target="_blank"><img alt="MySQL 8.0+" src="https://img.shields.io/badge/MySQL-8.0%2B-orange"></a>
+  <a href="LICENSE" target="_blank"><img alt="License Apache-2.0" src="https://img.shields.io/badge/License-Apache--2.0-green"></a>
+</p>
 
-- 欢迎首页：`Welcome` 提供介绍型首页，说明框架能力并提供后台 / 文档 / 模块市场入口
-- 站点设置：`Site` 提供站点名称、Logo、SEO、备案、主色调等基础配置
-- 导航管理：`Nav` 提供头部 / 底部 / 底部次导航三个展示位置
-- 后台管理：`AdminManager` 提供基于 RBAC 的权限管理，多管理员多角色，手机 / 平板 / PC 均可管理
-- 模块市场：`ModuleStore` 提供后台在线安装、卸载、升级
-- 开发助手：`ModuleDeveloper` 一键创建模块、打包与发布
-- 基础能力：`Vendor` 提供字段、表格、表单、文件上传、测试基座等通用能力
+<p align="center">
+  <a href="https://modstart.com">官网</a> ·
+  <a href="https://demo-modstart-laravel13.modstart.com">前台演示</a> ·
+  <a href="https://demo-modstart-laravel13.modstart.com/admin/">后台演示</a> ·
+  <a href="https://modstart.com/doc">开发文档</a> ·
+  <a href="#ai-开发技能">AI 开发技能</a> ·
+  <a href="https://modstart.com/store">模块市场</a> ·
+  <a href="https://modstart.com/forum">交流论坛</a>
+</p>
 
-##  💡 系统简介
+前台与后台都不需要写代码就能跑起来：`modstart:init` 一条命令完成迁移、安装已启用模块、创建管理员。
 
-本项目是基于 **Laravel 13** 的内容建站系统，运行于 **PHP 8.3+**，底座为 **ModStart 6.0.0** 基础库。
+> 演示站装了会员、CMS、博客等模块，跟本仓库默认的精简装配不是一回事，别拿它判断默认功能。演示数据会定期重置，后台账号以登录页提示为准。
 
-`config/module.php` 注册 6 个核心模块：`Vendor`、`AdminManager`、`ModuleStore`、`Site`、`Nav`、`Welcome`；`.env` 的 `MS_MODULES` 另外强制启用 `ModuleDeveloper`，运行时实际共 7 个模块。后台干净、启动更快。
+<details>
+<summary>本仓库默认装配了什么</summary>
 
-前台首页由 `Welcome` 模块提供：它在 `Core/ModuleServiceProvider` 中向 `HomePageProvider` 注册，`app/Web/Controller/IndexController` 的默认首页动作指向 `\Module\Welcome\Web\Controller\IndexController@index`。需要换首页时，启用 `HomePageSwitcher` 后在后台切换，或直接修改该默认动作指向其它模块。
+`config/module.php` 注册 6 个核心模块：`Vendor`、`AdminManager`、`ModuleStore`、`Site`、`Nav`、`Welcome`，运行时就是这 **6 个模块**。模块开发助手 `ModuleDeveloper` 默认未启用，需要时在后台「系统管理 → 模块管理」安装。
 
-`module/` 下的模块代码保持 Laravel 5.1 / 9 / 13 三版本通用语法，同一份模块可运行在 ModStart 的各发行版上。
+前台首页由 `Welcome` 模块提供：它在 `Core/ModuleServiceProvider` 里向 `HomePageProvider` 注册，`app/Web/Controller/IndexController` 的默认首页动作指向 `\Module\Welcome\Web\Controller\IndexController@index`。模块目录下的代码保持 Laravel 5.1 / 9 / 13 三版本通用语法，同一份模块可以运行在 ModStart 的各发行版上。
 
-- [ModStart 官方网站](https://modstart.com)
-- [模块市场](https://modstart.com/store)
-- [开发文档](https://modstart.com/doc)
+</details>
 
-**技术栈**
+<p align="center">
+  <img src="./assets/readme/section-capabilities.svg" width="100%" alt="能力一览：六个内置模块，装启停互不影响">
+</p>
 
-- [Laravel 13](https://laravel.com/)
-- [ModStart 基础库](https://modstart.com/doc)
-- [Vue](https://vuejs.org/)
-- [Element UI](https://element.eleme.io/)
-- [jQuery](http://jquery.com)
+## 内置模块
 
-##  💥 系统特性
+| 模块 | 提供的能力 |
+|---|---|
+| `Vendor` 通用功能包 | 字段、表格、表单、文件上传、分片上传、测试基座等通用能力 |
+| `AdminManager` 管理员框架 | 基于 RBAC 的权限管理，多管理员多角色，手机 / 平板 / PC 均可管理 |
+| `ModuleStore` 模块市场 | 后台在线安装、卸载、升级模块 |
+| `Site` 基本设置 | 站点名称、Logo、SEO、备案、主色调等配置 |
+| `Nav` 通用导航 | 头部 / 底部 / 底部次导航三个展示位置 |
+| `Welcome` 欢迎首页 | 介绍型首页，含后台、文档、模块市场快捷入口 |
 
-- 全模块化开发，积木式搭建系统，可灵活组合
-- 简洁优雅、灵活可扩展，可实现大型复杂系统
-- 后台 RBAC 权限管理，多管理员多角色管理
-- 丰富的数据表格、数据表单、数据详情功能
-- 内置文件上传、分片上传，无需繁琐开发
-- 丰富的模块市场，后台一键快速安装
-- 基础库能力内置优先，不额外引入第三方 PHP 依赖
+> `ModuleDeveloper`（模块开发助手，一键创建模块、打包与发布）**默认未启用**，需要时在后台「系统管理 → 模块管理」安装。
 
-## 🎨 系统演示
+**系统特性**
 
-> 演示站为完整功能装配（含会员、CMS、博客等模块），与本仓库默认的精简装配不同，仅用于查看 ModStart 的能力边界。
+- 一份代码多版本：`module/` 里的代码同时要跑 Laravel 5.1 / 9 / 13
+- 后台能力内置：RBAC、数据表格、数据表单、文件上传、操作日志都在 `AdminManager` 与 `Vendor` 里，做业务不用重写
+- 内置实现优先：通用能力由基础库自己实现，不额外引第三方 PHP 依赖
+- 模块市场：后台在线安装、升级，业务能力按需装，核心代码不动
+- 多端适配：PC 主题、H5 页面与接口共用同一套业务逻辑
 
-### 前台演示地址
+技术栈：Laravel 13 · ModStart 基础库 · Vue · Element UI · jQuery。
 
-[https://demo-modstart-laravel13.modstart.com](https://demo-modstart-laravel13.modstart.com)
+<p align="center">
+  <img src="./assets/readme/section-mechanism.svg" width="100%" alt="模块如何工作：一个模块就是一个目录">
+</p>
 
-> 演示数据会定期重置
+## 模块如何工作
 
-### 后台演示地址
+<p align="center">
+  <img src="./assets/readme/workflow-module.svg" width="100%" alt="模块生命周期：模块目录 → 安装 → 启用 → 生效，四个步骤与对应命令">
+</p>
 
-[https://demo-modstart-laravel13.modstart.com/admin/](https://demo-modstart-laravel13.modstart.com/admin/)
+模块自带路由、菜单、数据表与视图，生命周期只有四步：放进 `module/`、执行安装、后台启用、立刻生效。停用后这些能力整体消失，其他模块与内核都不受影响。
 
-> 管理员账号以演示站点登录页提示为准
+**首页与主题怎么换**
 
-## 🎁 模块市场
+- **换首页**：启用 `HomePageSwitcher` 模块后在后台「首页切换器」选择；或修改 `app/Web/Controller/IndexController` 的默认首页动作；或在模块 `Core/ModuleServiceProvider` 中 `HomePageProvider::register()` 注册新的首页提供者。
+- **主题模板**：`resources/views/theme/default/pc/`（`frame.blade.php` + `share/header.blade.php` + `share/footer.blade.php`）。模板用 `modstart_module_enabled('Member')`、`modstart_module_enabled('Nav')` 判断模块能力，模块未启用时自动隐藏相关区域，不会报错。
+- **样式覆盖**：`public/theme/default/css/style.css` 加载在编译产物之后，用于站点级覆盖（主色调、页脚深色区域文字色等），无需重新编译。
 
-丰富的模块市场，后台一键安装模块应用
+<p align="center">
+  <img src="./assets/readme/section-install.svg" width="100%" alt="快速开始：三步进后台，不用改代码">
+</p>
 
-![模块市场](https://ms-assets.modstart.com/data/image/2022/01/12/21242_me7h_4616.jpg)
+## 快速开始
 
-## 🌐 开发文档
-
-[https://modstart.com/doc](https://modstart.com/doc)
-
-##  🔧 系统安装
-
-### 环境要求
+**环境要求**
 
 | 项目 | 要求 |
 |---|---|
@@ -109,36 +98,29 @@
 | PHP 函数 | `proc_open`、`putenv`、`proc_get_status` 未被禁用 |
 | 运行环境 | 64 位 PHP；`bootstrap/`、`bootstrap/cache/`、`storage/`、`public/` 目录可写 |
 | Web 服务器 | `Nginx` / `Apache`，站点运行目录指向 `public/`，需支持 Rewrite |
-| Composer | `2.x` |
+| Composer | `2.x`（仅在更新 PHP 依赖时需要；`vendor/` 已随仓库提供） |
 | Node.js | 仅在重新编译前端资源、运行截图 / UI 测试时需要 |
 
-> 版本门槛以 `composer.json` 的 `require.php`（`^8.3`）为准，安装向导与 artisan 均按此校验；本文档命令统一使用 `php85`（PHP 8.5.12）。
->
-> PHP 8.5 注意：`opcache` 自 8.5 起已内置（面板「安装扩展」里不再提供），`disable_classes` 配置项已移除，`curl_close` / `finfo_close` / `imagedestroy` 已弃用（由内置兼容层处理）；宝塔 PHP 8.4 / 8.5 的「极速安装」包可能未包含 `--enable-zip`，需改用「编译安装」并添加 `--enable-zip`，或先使用 PHP 8.1 / 8.2。安装页检测不通过时会展开「环境诊断与修复指引」，输出站点实际使用的 `php.ini`、`extension_dir` 与已加载扩展清单，便于核对面板与站点是否同一个 PHP。
-
-### 命令行安装
+**命令行安装**
 
 ```bash
-composer install
-# vendor/modstart/modstart 不由 Composer 托管（本仓库已包含）；若目录缺失，先执行 make Install 拉取基础库
 cp .env.example .env            # 填写 DB_HOST / DB_PORT / DB_DATABASE / DB_USERNAME / DB_PASSWORD
 php85 artisan key:generate
 php85 artisan modstart:init --username=admin --password=123456
 ```
 
-`modstart:init` 会依次执行数据库迁移、安装 `config/module.php` 中已启用的模块、创建后台管理员，最后写入 `storage/install.lock`；追加 `--demo` 可同时导入演示数据。上面的步骤与 `make Install` 等价。`storage/install.lock` 已加入 `.gitignore`，每台环境各自安装。
+`vendor/` 已随仓库提供（含 Laravel 框架与 ModStart 基础库），**无需 `composer install`**；只有更新 PHP 依赖时才执行。
 
-### 安装向导
+`modstart:init` 依次执行数据库迁移、安装 `config/module.php` 中已启用的模块、创建后台管理员，最后写入 `storage/install.lock`；追加 `--demo` 可同时导入演示数据。`make Install` 在此基础上额外执行 `composer install`、`vendor:publish --tag=modstart` 与 `module-install-all`。
 
-部署代码并完成 `composer install` 后，浏览器访问：
+> 版本门槛以 `composer.json` 的 `require.php`（`^8.3`）为准，安装向导与 artisan 均按此校验；本文档命令统一使用 `php85`（PHP 8.5.12）。
+>
+> PHP 8.5 注意：`opcache` 自 8.5 起已内置（面板「安装扩展」里不再提供），`disable_classes` 配置项已移除，`curl_close` / `finfo_close` / `imagedestroy` 已弃用（由内置兼容层处理）；宝塔 PHP 8.4 / 8.5 的「极速安装」包可能未包含 `--enable-zip`，需改用「编译安装」并添加 `--enable-zip`，或先使用 PHP 8.1 / 8.2。安装页检测不通过时会展开「环境诊断与修复指引」，输出站点实际使用的 `php.ini`、`extension_dir` 与已加载扩展清单，便于核对面板与站点是否同一个 PHP。
 
-```
-http://your-domain/install.php
-```
+<details>
+<summary>安装向导（浏览器安装）</summary>
 
-向导共两步（环境检查 → 配置安装），页面在 `public/install.php`，逻辑在
-`module/Vendor/Installer/install.php`，接口为 `module/Vendor/Web/routes.php` 中的
-`install/ping`、`install/prepare`、`install/execute`、`install/lock`：
+部署代码后访问 `http://your-domain/install.php`（`vendor/` 已随仓库提供，无需 `composer install`）。向导共两步（环境检查 → 配置安装），页面在 `public/install.php`，逻辑在 `module/Vendor/Installer/install.php`，接口为 `module/Vendor/Web/routes.php` 中的 `install/ping`、`install/prepare`、`install/execute`、`install/lock`：
 
 1. **环境检查**：PHP 版本（按 `composer.json` 的 `require.php` 约束校验）、扩展与函数、目录可写、Rewrite 规则（`/install/ping` 返回 `ok` 才算通过）与 `.env` 可写性；
 2. **配置安装**：填写 MySQL 连接与后台管理员账号 → `/install/prepare` 校验数据库连接并按 `.env.example` 生成 `.env` → `/install/execute` 执行 `migrate`、创建管理员、逐个安装模块，最后写入 `storage/install.lock`。
@@ -147,11 +129,14 @@ http://your-domain/install.php
 
 - 站点运行目录必须指向 `public/`（页面提示「安装路径为 public/install.php」即说明根目录配置有误）；
 - 需要重装时必须先删除 `storage/install.lock`，并清空 `.env` 中的 `DB_HOST` 等连接信息（`prepare` 会拒绝覆盖已有数据库配置的 `.env`）；
-- 向导从 `.env.example` 生成 `.env`，其中的 `APP_KEY`、`ENCRYPT_KEY` 由安装器随机生成，`MS_MODULES` 等固定项原样保留；
+- 向导从 `.env.example` 生成 `.env`，其中 `APP_KEY`、`ENCRYPT_KEY` 由安装器随机生成，其余固定项原样保留；
 - 后台入口由 `.env` 的 `ADMIN_PATH` 控制，默认 `/admin/`；
 - 安装完成后建议删除 `public/install.php`（保留也可，向导会提示「系统无需重复安装」）。
 
-### 目录结构
+</details>
+
+<details>
+<summary>目录结构</summary>
 
 ```
 app/                      项目应用层（Admin / Web / Api / Exceptions / Providers）
@@ -172,26 +157,68 @@ scripts/                  诊断与冒烟脚本（类加载 / 菜单 / 模板 / 
 vendor/modstart/modstart  ModStart 6.0.0 基础库（随仓库提供，非 Composer 托管）
 ```
 
-> 前台路由不使用 Laravel 默认的 `routes/web.php`（本仓库没有 `routes/` 目录）：`app/Web/routes.php` 与各启用模块的 `Web/routes.php` 由 `ModStartServiceProvider`（`ModStartWeb::registerModuleRoutes`）统一注册。
+> 前台路由不使用 Laravel 默认的 `routes/web.php`：`app/Web/routes.php` 与各启用模块的 `Web/routes.php` 由 `ModStartServiceProvider`（`ModStartWeb::registerModuleRoutes`）统一注册。
 
-### 首页与主题
+</details>
 
-- **首页链路**：`app/Web/Controller/IndexController::index()` → `HomePageProvider::call()` → `module/Welcome/Core/ModuleServiceProvider` 注册的 `WelcomeHomePageProvider` → `\Module\Welcome\Web\Controller\IndexController@index` → `module/Welcome/View/pc/welcome/index.blade.php`。
-- **换首页**：启用 `HomePageSwitcher` 模块后在后台「首页切换器」选择；或修改 `app/Web/Controller/IndexController` 的默认首页动作；或在自己的模块 `Core/ModuleServiceProvider` 中 `HomePageProvider::register()` 注册新的首页提供者。
-- **主题模板**：`resources/views/theme/default/pc/`（`frame.blade.php` + `share/header.blade.php` + `share/footer.blade.php`）。模板中用 `modstart_module_enabled('Member')`、`modstart_module_enabled('Nav')` 判断模块能力，模块未启用时自动隐藏相关区域，不会报错。
-- **样式覆盖**：`public/theme/default/css/style.css` 加载在编译产物之后，用于站点级覆盖（如主色调、页脚深色区域文字色），无需重新编译。
+<p align="center">
+  <img src="./assets/readme/section-skill.svg" width="100%" alt="AI 开发技能：先读规范，再写代码">
+</p>
 
-### 升级指南
+## AI 开发技能
 
-参照 [https://modstart.com/doc/install/upgrade.html](https://modstart.com/doc/install/upgrade.html)
+模块开发的约定不少：路由放 `Api/routes.php`（不放 `Core/ModuleServiceProvider`），迁移类名要和文件名一致，`down()` 留空，Blade 里 SUI 的 `ub-` 不能和 `tw-` 混用，改了接口要补测试。人记不全，AI 没有约束时会自己发明一套。
 
-升级后如静态资源有变化，执行 `make PublishAsset` 重新发布基础库与模块资源。
+这些约定连同示例代码打成了一个技能包，交给助手读：
 
-##  🔨 开发速看
+**[https://github.com/modstart-lib/modstart-skill](https://github.com/modstart-lib/modstart-skill)**（Apache-2.0）
 
-以下以一个简单的「新闻管理」模块为例，快速了解 ModStart 模块开发的大致流程。
+| 路径 | 内容 |
+|---|---|
+| `SKILL.md` | 技能入口：核心理念（示例驱动开发、约定优于配置、简单优先）、开发流程、`seed-test` 约定与文档索引 |
+| `doc/module.md` | 模块目录结构、`Api` / `OpenApi` 路由注册与中间件、模块安装步骤 |
+| `doc/basic.md`、`doc/php.md`、`doc/blade.md`、`doc/vue_js.md` | 基础 / PHP / Blade（SUI 与 `tw-` 不混用、`@asset()`、禁止大段 `@php`）/ Vue & JavaScript |
+| `sources/module/` | 示例模块源码：`Demo`（表格、表单、Widget、任务）、`CmsThemeDemo`、`BlogThemeDemo` |
 
-### 模块目录
+**第一步：让助手装技能**
+
+不用自己克隆、翻配置，直接把这句话丢给助手：
+
+```text
+把 https://github.com/modstart-lib/modstart-skill 安装为技能
+```
+
+**第二步：直接提需求**
+
+装好之后不用再重复规范，按功能描述即可：
+
+```text
+按 modstart-skill 的规范开发「新闻管理」功能：
+1. 模块名 News，后台 CRUD：title（标题）、cover（封面）、content（内容）；
+2. 列表按标题模糊搜索，创建时间倒序；
+3. 同时给出接口测试脚本，并列出需要我执行的 artisan 命令。
+```
+
+把 `News`、字段与筛选条件换成你要的即可；写清「哪个模块、哪几个字段、列表怎么筛」，助手就能对着 `sources/module/` 的同类实现写出符合约定的代码。
+
+**落到具体任务上**
+
+- 新增后台 CRUD：字段、`gridFilter`、`HasAdminQuickCRUD` 按仓库现有写法生成
+- 新增接口：同时给出 `Test/Api/*.php` 测试脚本，符合「接口改动必须补测试」的约定
+- 改后台视图：用 SUI 类而不混 `tw-` 类，静态资源走 `@asset()`，不在模板里堆 `@php`
+- 建模块：按 `Admin` / `Web` / `Api` / `Migrate` / `Model` / `View` 的目录约定落代码，最后给出 `modstart:module-install` 命令
+
+> 技能包是索引与约束，不是事实来源：规范与本仓库 `module/` 下的实现冲突时，以仓库代码为准。
+
+<p align="center">
+  <img src="./assets/readme/section-develop.svg" width="100%" alt="写一个模块：从空目录到后台 CRUD">
+</p>
+
+## 写一个模块
+
+下面以「新闻管理」为例走一遍；接上 AI 开发技能后，这八步可以直接让助手按同一套约定出初稿，再由你按业务改。
+
+**① 模块目录**
 
 ```
 module/News/
@@ -210,7 +237,7 @@ module/News/
 
 > 模块生命周期内需同步维护 `README.md` 与 `Docs/release.md`（更新记录）。
 
-### 模块声明 `config.json`
+**② 模块声明 `config.json`**
 
 ```json
 {
@@ -228,7 +255,7 @@ module/News/
 }
 ```
 
-### 数据表迁移 `Migrate/2026_11_03_000000_news_create.php`
+**③ 数据表迁移 `Migrate/2026_11_03_000000_news_create.php`**
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
@@ -256,7 +283,7 @@ class NewsCreate extends Migration
 
 > 无需 `hasTable` 守卫（重复执行由 `migrations` 表兜底）；类名必须等于文件名去掉日期序号的 StudlyCase（`news_create.php` → `NewsCreate`）；字段一律 `nullable()`，`down()` 留空。
 
-### 模型 `Model/News.php`
+**④ 模型 `Model/News.php`**
 
 ```php
 namespace Module\News\Model;
@@ -269,7 +296,7 @@ class News extends Model
 }
 ```
 
-### 控制器 `Admin/Controller/NewsController.php`
+**⑤ 控制器 `Admin/Controller/NewsController.php`**
 
 ```php
 namespace Module\News\Admin\Controller;
@@ -307,7 +334,7 @@ class NewsController extends Controller
 }
 ```
 
-### 路由 `Admin/routes.php`
+**⑥ 路由 `Admin/routes.php`**
 
 ```php
 /* @var \Illuminate\Routing\Router $router */
@@ -318,7 +345,7 @@ $router->match(['post'], 'news/delete', 'NewsController@delete');
 $router->match(['get'], 'news/show', 'NewsController@show');
 ```
 
-### 后台菜单 `Core/ModuleServiceProvider.php`
+**⑦ 后台菜单 `Core/ModuleServiceProvider.php`**
 
 ```php
 namespace Module\News\Core;
@@ -348,16 +375,13 @@ class ModuleServiceProvider extends ServiceProvider
 }
 ```
 
-### 安装并启用模块
-
-新增模块无需修改 `.gitignore`（当前没有 `module/` 的忽略规则；若日后添加 `/module/*` 之类规则，需要补 `!/module/News/`），执行安装（跑迁移 + 发布模块静态资源）：
+**⑧ 安装并启用**
 
 ```bash
 php85 artisan modstart:module-install News
 ```
 
-新安装的模块默认 `enable => false`，在后台「模块管理」里启用即可；如需固定为系统模块，在
-`config/module.php` 的 `system` 段注册：
+新安装的模块默认 `enable => false`，在后台「模块管理」里启用即可；如需固定为系统模块，在 `config/module.php` 的 `system` 段注册：
 
 ```php
 'News' => [
@@ -365,9 +389,9 @@ php85 artisan modstart:module-install News
 ],
 ```
 
-这样一个简单的新闻增删改查模块就开发完成了。
+> 新增模块无需修改 `.gitignore`（当前没有 `module/` 的忽略规则；若日后添加 `/module/*` 之类规则，需要补 `!/module/News/`）。
 
-## ⌨️ 常用命令
+## 常用命令
 
 | 命令 | 说明 |
 |---|---|
@@ -380,47 +404,11 @@ php85 artisan modstart:module-install News
 | `php85 artisan modstart:init [--username --password --demo]` | 初始化：迁移 + 安装模块 + 建管理员 |
 | `php85 artisan optimize:clear` | 清理配置 / 路由 / 视图 / 应用缓存 |
 
-##  🧪 测试
-
-```bash
-php85 artisan modstart:seed-test                      # 全量（seed / api / biz / ui 四阶段，默认重建测试库）
-php85 artisan modstart:seed-test --module=Site        # 定向：只测受影响模块（默认不重建库，需重建加 --reset）
-php85 artisan modstart:seed-test --phase=api,biz      # 只跑接口与业务阶段
-make Test                                             # 全量测试的等价入口
-make Test.Module MODULE=Site                          # 定向测试的等价入口
-```
-
-> Seed 阶段仅在 `.env` 设置 `AUTO_TEST=true` 时真正写入数据；UI 阶段会启动 `php artisan serve` 与 headless Chrome（依赖 `playwright-core`，首次运行自动安装到 `~/.modstart/auto-test`）。
-
-### 冒烟脚本
-
-| 改动类型 | 该跑哪个脚本 |
-|---|---|
-| 新增 / 修改类文件 | `php85 scripts/class-load-smoke.php` |
-| 后台菜单、`Class@method` 解析 | `php85 scripts/menu-url-smoke.php` |
-| Blade 模板 | `php85 scripts/blade-compile-smoke.php`、`php85 scripts/blade-compat-smoke.php --env=laravel13`（配合 `php56 … --env=laravel5`、`php81 … --env=laravel9`） |
-| 路由目标 | `php85 scripts/route-target-smoke.php` |
-| 页面渲染 | `php85 scripts/page-smoke.php --group=admin`、`php85 scripts/http-smoke.php` |
-
-## 📋 常见问题
-
-- 安装向导提示「系统无需重复安装」：删除 `storage/install.lock` 后重试
-- 后台菜单 / 页面 500 且刚装过或切过模块：依次执行 `php85 artisan optimize:clear` 与 `php85 artisan modstart:module-refresh-all`，必要时再 `php85 artisan modstart:module-install-all` 重新发布模块资源
-- 启停模块后前台菜单 / 页脚仍显示旧内容：执行 `php85 artisan optimize:clear`（生产环境模块 ServiceProvider、路由与配置均有缓存）
-- 前台 header / footer 使用了某个模块的能力（会员入口、导航、搜索框）：模板统一用 `modstart_module_enabled('Member')` 等条件包裹，模块未启用时自动隐藏，不会报错
-- 页面样式或脚本不生效：执行 `make PublishAsset` 重新发布静态资源
-- 安装、部署等问题：[https://modstart.com/doc/install/qa.html](https://modstart.com/doc/install/qa.html)
-
-如有其他问题推荐使用官方讨论交流群或在线讨论
-
-- [https://modstart.com/forum](https://modstart.com/forum)
-
-## ⭐️ 贡献代码
+## 贡献与交流
 
 - `GitHub` [https://github.com/open-tecmz/modstart-laravel13](https://github.com/open-tecmz/modstart-laravel13)
 - `Gitee` [https://gitee.com/open-tecmz/modstart-laravel13](https://gitee.com/open-tecmz/modstart-laravel13)
-
-## ✉️ 使用交流
+- 官方论坛 [https://modstart.com/forum](https://modstart.com/forum)
 
 > 添加好友请备注 ModStart Laravel 13
 
@@ -435,12 +423,16 @@ make Test.Module MODULE=Site                          # 定向测试的等价入
         <tr>
             <td>
                 <img style="width:100%;"
-                     src="https://open.tecmz.com/code_dynamic/wx" />
+                     src="https://open.tecmz.com/code_dynamic/wx" alt="ModStart 微信交流群二维码" />
             </td>
             <td>
                 <img style="width:100%;"
-                     src="https://open.tecmz.com/code_dynamic/qq" />
+                     src="https://open.tecmz.com/code_dynamic/qq" alt="ModStart QQ 交流群二维码" />
             </td>
         </tr>
     </tbody>
 </table>
+
+## 许可证
+
+Apache License 2.0，详见 [LICENSE](LICENSE)。本软件基于 Apache 2.0 协议开源，支持免费商用，使用时请保留版权信息。
